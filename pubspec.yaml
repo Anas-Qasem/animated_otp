@@ -1,0 +1,23 @@
+name: animated_otp_field
+description: "A new Flutter package project."
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: ">=2.15.0 <4.0.0"
+  flutter: ">=3.7.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # shake_animation_widget
+  shake_animation_widget: ^3.0.4
+  # haptic feed back
+  gaimon: ^1.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
