@@ -22,7 +22,6 @@ class AnimatedOtpField extends StatefulWidget {
     this.valueTextStyle,
     this.cursorTextStyle,
     this.showCursor = true,
-    this.optValidationValue,
     this.errorPinDecoration,
     this.validPinDecoration,
     this.endValidationMsgOffset,
@@ -38,8 +37,7 @@ class AnimatedOtpField extends StatefulWidget {
     this.validationMsg = "InValid OTP",
     this.autofillHints = const [AutofillHints.oneTimeCode],
     this.pinAnimationDuration = const Duration(milliseconds: 300),
-  })  : assert(isOtpValid != null || optValidationValue != null, "How You Gonna Check If The Otp is Valid ! :) "),
-        super(key: key);
+  }) : super(key: key);
 
   /// If true , user can select Text
   final bool enableTextSelection;
@@ -156,7 +154,6 @@ class AnimatedOtpField extends StatefulWidget {
   /// Use this value when the validation happens on the server side or the validation happens in state management.
   /// Set this to true or false based on your validation result to trigger valid/invalid UI.
   /// This value overrides the result of [isOtpValid] if both are provided.
-  final bool? optValidationValue;
 
   /// Whether the OTP field should shake when the entered OTP is invalid.
   /// This property is only effective when the OTP is validated and found to be invalid.
@@ -194,19 +191,16 @@ class AnimatedOtpField extends StatefulWidget {
   /// This can be used to make space for elements like a validation message.
   final double extraFieldHeight;
 
-  /// The ending offset for the slide animation of the validation message.
-  /// This determines the final position of the message after it slides in.
-  /// Defaults to [Offset.zero].
   final Offset? endValidationMsgOffset;
 
   @override
-  State<AnimatedOtpField> createState() => _AnimatedOtpFieldState();
+  State<AnimatedOtpField> createState() => AnimatedOtpFieldState();
 }
 
-class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelectionGestureDetectorBuilderDelegate, AutofillClient {
+class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelectionGestureDetectorBuilderDelegate, AutofillClient {
   @override
   late final GlobalKey<EditableTextState> editableTextKey;
-  EditableTextState? get fieldState => editableTextKey.currentState;
+  EditableTextState? get _fieldState => editableTextKey.currentState;
 
   @override
   bool get forcePressEnabled => false;
@@ -220,7 +214,7 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
   }
 
   @override
-  String get autofillId => fieldState!.autofillId;
+  String get autofillId => _fieldState!.autofillId;
 
   @override
   TextInputConfiguration get textInputConfiguration {
@@ -233,40 +227,43 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
           )
         : AutofillConfiguration.disabled;
 
-    return fieldState!.textInputConfiguration.copyWith(autofillConfiguration: autofillConfiguration);
+    return _fieldState!.textInputConfiguration.copyWith(autofillConfiguration: autofillConfiguration);
   }
 
   /// Text Controller
+  @protected
   late final TextEditingController _controller;
 
   // field focus node
+  @protected
   late final FocusNode _fieldFocusNode;
-
-  late final Widget editableText;
+  @protected
+  late final Widget _editableText;
 
   // pin fields
-  late final Widget pins;
-
-  late final ValueNotifier<bool> isValid;
-
+  @protected
+  late final Widget _pins;
+  @protected
+  late final ValueNotifier<bool> _isValid;
+  @protected
   late final ValueNotifier<int> _currentFocus;
-
+  @protected
   late final ValueNotifier<String> _currentValue;
-
+  @protected
   late final ValueNotifier<bool> _showInValidOtpDecoration;
-
+  @protected
   late final List<ValueNotifier<bool>> showValidOtpAnimation;
-
+  @protected
   late final ShakeAnimationController _shakeAnimationController;
-
-  late final ValueNotifier<String> validationMsg;
-
-  late final TextStyle errorTextStyle;
+  @protected
+  late final ValueNotifier<String> _validationMsg;
+  @protected
+  late final TextStyle _errorTextStyle;
 
   /// Handles the tap gesture on the OTP field to request keyboard focus.
   /// It also sets the focus to the appropriate pin based on the current value length.
   void _onTap() {
-    fieldState?.requestKeyboard();
+    _fieldState?.requestKeyboard();
     _currentFocus.value = _currentValue.value.length;
   }
 
@@ -277,7 +274,7 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
     if (_fieldFocusNode.hasFocus) {
       /// remove error decoration on Error
       _showInValidOtpDecoration.value = false;
-      validationMsg.value = "";
+      _validationMsg.value = "";
 
       /// to focus the last pin if the value len is equal to [widget.len]
       if (_currentValue.value.length == widget.len) {
@@ -298,8 +295,8 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
     if (value.length > widget.len) {
       final int lastCharIndex = _currentValue.value.length - 1;
       _currentValue.value = _currentValue.value.replaceRange(lastCharIndex, lastCharIndex + 1, value.split('').last);
-      fieldState?.updateEditingValue(TextEditingValue(text: _currentValue.value));
-      _onComplete(value);
+      _fieldState?.updateEditingValue(TextEditingValue(text: _currentValue.value));
+      _onComplete(_currentValue.value);
       return;
     }
 
@@ -323,7 +320,7 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
     _fieldFocusNode.unfocus();
 
     // validate from the function or external value
-    if (widget.isOtpValid != null && widget.optValidationValue == null) {
+    if (widget.isOtpValid != null && widget.key == null) {
       _validateTheOpt(value, widget.isOtpValid!(value));
     }
   }
@@ -331,8 +328,8 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
   /// Validates the entered OTP based on the provided boolean value.
   /// Triggers either the valid or invalid OTP animation and effects.
   void _validateTheOpt(String value, bool validationValue) {
-    isValid.value = validationValue;
-    if (isValid.value) {
+    _isValid.value = validationValue;
+    if (_isValid.value) {
       _otpIsValid();
     } else {
       _otpIsInValid();
@@ -357,7 +354,7 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
     _showInValidOtpDecoration.value = true;
     Timer(Duration(milliseconds: 1200), () => _showInValidOtpDecoration.value = false);
     Gaimon.error(); // Assuming Gaimon is imported and available
-    validationMsg.value = widget.validationMsg;
+    _validationMsg.value = widget.validationMsg;
   }
 
   /// Returns the character at the specified index in the current OTP value.
@@ -369,20 +366,16 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
     return _currentValue.value.split('')[index];
   }
 
-  @override
-  void didUpdateWidget(covariant AnimatedOtpField oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (_currentValue.value.length == widget.len && widget.isOtpValid == null && widget.optValidationValue != null) {
-      _validateTheOpt(_currentValue.value, widget.optValidationValue!);
-    }
+  void validateOtp(bool value) {
+    _validateTheOpt(_currentValue.value, value);
   }
 
   @override
   void initState() {
     super.initState();
-    isValid = ValueNotifier<bool>(true);
+    _isValid = ValueNotifier<bool>(true);
     _currentFocus = ValueNotifier<int>(-1);
-    validationMsg = ValueNotifier<String>("");
+    _validationMsg = ValueNotifier<String>("");
     _currentValue = ValueNotifier<String>("");
     editableTextKey = GlobalKey<EditableTextState>();
     _fieldFocusNode = widget.fieldFocusNod ?? FocusNode();
@@ -390,8 +383,8 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
     _shakeAnimationController = ShakeAnimationController();
     _controller = widget.textController ?? TextEditingController();
     showValidOtpAnimation = List.generate(widget.len, (_) => ValueNotifier<bool>(false));
-    errorTextStyle = TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.w600);
-    editableText = Offstage(
+    _errorTextStyle = TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.w600);
+    _editableText = Offstage(
       offstage: true,
       child: EditableText(
         maxLines: 1,
@@ -417,7 +410,7 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
         style: const TextStyle(fontSize: 0, height: 0, color: Colors.transparent),
       ),
     );
-    pins = ShakeAnimationWidget(
+    _pins = ShakeAnimationWidget(
       shakeRange: .1,
       isForward: false,
       shakeAnimationController: _shakeAnimationController,
@@ -454,7 +447,7 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
   void dispose() {
     _currentValue.dispose();
     _currentFocus.dispose();
-    validationMsg.dispose();
+    _validationMsg.dispose();
     _showInValidOtpDecoration.dispose();
     _fieldFocusNode.removeListener(_focusNodeListner);
     for (ValueNotifier<bool> e in showValidOtpAnimation) {
@@ -479,19 +472,19 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
           child: Stack(
             alignment: Alignment.center,
             children: [
-              editableText,
-              Positioned.fill(child: pins),
+              _editableText,
+              Positioned.fill(child: _pins),
               if (widget.showValidationMsg)
                 Align(
                   alignment: AlignmentDirectional.bottomStart,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 2),
                     child: ValueListenableBuilder<String>(
-                      valueListenable: validationMsg,
+                      valueListenable: _validationMsg,
                       builder: (_, msg, __) => AnimatedSwitcher(
                         duration: Duration(milliseconds: 500),
                         transitionBuilder: _transitionBuilder,
-                        child: msg.isEmpty ? SizedBox.shrink() : Text(msg, style: widget.validationMsgTextStyle ?? errorTextStyle),
+                        child: msg.isEmpty ? SizedBox.shrink() : Text(msg, style: widget.validationMsgTextStyle ?? _errorTextStyle),
                       ),
                     ),
                   ),
