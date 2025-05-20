@@ -25,6 +25,7 @@ class AnimatedOtpField extends StatefulWidget {
     this.optValidationValue,
     this.errorPinDecoration,
     this.validPinDecoration,
+    this.endValidationMsgOffset,
     this.extraFieldHeight = 0,
     this.focusedPinDecoration,
     this.ignorePointer = false,
@@ -112,19 +113,19 @@ class AnimatedOtpField extends StatefulWidget {
 
   /// The decoration to use for each OTP pin field when the input is invalid.
   /// If null, a default error decoration is applied (red border).
-  final Decoration? errorPinDecoration;
+  final BoxDecoration? errorPinDecoration;
 
   /// The decoration to use for each OTP pin field.
   /// If null, a default decoration is applied.
-  final Decoration? pinDecoration;
+  final BoxDecoration? pinDecoration;
 
   /// The decoration to use for each OTP pin field when it is focused.
   /// If null, a default focused decoration is applied (primary color border).
-  final Decoration? focusedPinDecoration;
+  final BoxDecoration? focusedPinDecoration;
 
   /// The decoration to use for each OTP pin field when the entered OTP is valid.
   /// If null, a default valid decoration is applied (green border with slightly thicker border).
-  final Decoration? validPinDecoration;
+  final BoxDecoration? validPinDecoration;
 
   /// The horizontal space between each OTP pin field.
   /// This controls the gap between the individual input boxes.
@@ -189,7 +190,14 @@ class AnimatedOtpField extends StatefulWidget {
   /// If null, a default text style is used.
   final TextStyle? validationMsgTextStyle;
 
+  /// Additional vertical space to add below the OTP field.
+  /// This can be used to make space for elements like a validation message.
   final double extraFieldHeight;
+
+  /// The ending offset for the slide animation of the validation message.
+  /// This determines the final position of the message after it slides in.
+  /// Defaults to [Offset.zero].
+  final Offset? endValidationMsgOffset;
 
   @override
   State<AnimatedOtpField> createState() => _AnimatedOtpFieldState();
@@ -499,8 +507,8 @@ class _AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSele
     // Convert double animation to Offset animation
     final Animation<Offset> offsetAnimation = animation.drive(
       Tween<Offset>(
+        end: widget.endValidationMsgOffset ?? Offset.zero,
         begin: Offset(-1, 0.0),
-        end: Offset.zero,
       ).chain(CurveTween(curve: Curves.easeOut)),
     );
     return SlideTransition(position: offsetAnimation, child: child);

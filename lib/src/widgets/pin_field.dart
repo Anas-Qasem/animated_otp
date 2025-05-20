@@ -140,21 +140,21 @@ class _PinFieldState extends State<_PinField> {
 
   Decoration _fieldDecoration(BuildContext context) {
     final ThemeData appTheme = Theme.of(context);
-
+    final BoxDecoration defualtDecoration = widget.animatedOtpField.pinDecoration ?? _defualtDecoration();
+    //
     if (widget.showInValidOTP) {
       return widget.animatedOtpField.errorPinDecoration ??
-          _defualtDecoration().copyWith(border: Border.all(width: 1.5, color: appTheme.colorScheme.error));
+          defualtDecoration.copyWith(border: Border.all(width: 1.5, color: appTheme.colorScheme.error));
     }
 
     if (widget.showValidOtp) {
-      return widget.animatedOtpField.validPinDecoration ?? _defualtDecoration().copyWith(border: Border.all(width: 1.8, color: Colors.green));
+      return widget.animatedOtpField.validPinDecoration ?? defualtDecoration.copyWith(border: Border.all(width: 1.8, color: Colors.green));
     }
 
     if (widget.isFocus) {
-      return widget.animatedOtpField.focusedPinDecoration ??
-          _defualtDecoration().copyWith(border: Border.all(width: 1.5, color: appTheme.primaryColor));
+      return widget.animatedOtpField.focusedPinDecoration ?? defualtDecoration.copyWith(border: Border.all(width: 1.5, color: appTheme.primaryColor));
     }
-    return _defualtDecoration();
+    return defualtDecoration;
   }
 
   BoxDecoration _defualtDecoration() {
