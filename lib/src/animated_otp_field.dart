@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'dart:math';
 import 'dart:async';
-import 'package:flutter/services.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:shake_animation_widget/shake_animation_widget.dart';
 part 'widgets/pin_field.dart';
@@ -24,8 +24,8 @@ class AnimatedOtpField extends StatefulWidget {
     this.showCursor = true,
     this.errorPinDecoration,
     this.validPinDecoration,
-    this.endValidationMsgOffset,
     this.extraFieldHeight = 0,
+    this.customErrorMsgTween,
     this.focusedPinDecoration,
     this.ignorePointer = false,
     this.validationMsgTextStyle,
@@ -191,7 +191,8 @@ class AnimatedOtpField extends StatefulWidget {
   /// This can be used to make space for elements like a validation message.
   final double extraFieldHeight;
 
-  final Offset? endValidationMsgOffset;
+  /// custom tween error msg
+  final Tween<Offset> Function()? customErrorMsgTween;
 
   @override
   State<AnimatedOtpField> createState() => AnimatedOtpFieldState();
@@ -209,9 +210,7 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
   bool get selectionEnabled => widget.enableTextSelection;
 
   @override
-  void autofill(TextEditingValue newEditingValue) {
-    // TODO: implement autofill
-  }
+  void autofill(TextEditingValue newEditingValue) {}
 
   @override
   String get autofillId => _fieldState!.autofillId;
@@ -473,7 +472,7 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
             alignment: Alignment.center,
             children: [
               _editableText,
-              Positioned.fill(child: _pins),
+              Positioned.fill(child: Directionality(textDirection: TextDirection.ltr, child: _pins)),
               if (widget.showValidationMsg)
                 Align(
                   alignment: AlignmentDirectional.bottomStart,
@@ -483,7 +482,7 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
                       valueListenable: _validationMsg,
                       builder: (_, msg, __) => AnimatedSwitcher(
                         duration: Duration(milliseconds: 500),
-                        transitionBuilder: _transitionBuilder,
+                        transitionBuilder: (child, animation) => _transitionBuilder(child, animation, context),
                         child: msg.isEmpty ? SizedBox.shrink() : Text(msg, style: widget.validationMsgTextStyle ?? _errorTextStyle),
                       ),
                     ),
@@ -496,14 +495,13 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
     );
   }
 
-  Widget _transitionBuilder(Widget child, Animation<double> animation) {
+  Widget _transitionBuilder(Widget child, Animation<double> animation, BuildContext context) {
+    final TextDirection textDirection = Directionality.of(context);
+    final bool isLtr = textDirection == TextDirection.ltr;
     // Convert double animation to Offset animation
-    final Animation<Offset> offsetAnimation = animation.drive(
-      Tween<Offset>(
-        end: widget.endValidationMsgOffset ?? Offset.zero,
-        begin: Offset(-1, 0.0),
-      ).chain(CurveTween(curve: Curves.easeOut)),
-    );
+    final Animation<Offset> offsetAnimation = animation.drive((widget.customErrorMsgTween?.call() ??
+            (isLtr ? Tween<Offset>(end: Offset.zero, begin: Offset(-1, 0.0)) : Tween<Offset>(end: Offset(-0.25, 0.0), begin: Offset(1, 0))))
+        .chain(CurveTween(curve: Curves.easeOut)));
     return SlideTransition(position: offsetAnimation, child: child);
   }
 }
