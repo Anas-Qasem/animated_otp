@@ -10,7 +10,7 @@ class _PinField extends StatefulWidget {
     required this.showValidOtp,
     required this.showInValidOTP,
     required this.animatedOtpField,
-    required this.validationAnimationDone,
+    required this.onValidationAnimationDone,
     required this.shakeAnimationController,
   });
 
@@ -21,7 +21,7 @@ class _PinField extends StatefulWidget {
   final bool isFocus;
 
   /// Indicates if this is the last pin field in the sequence.
-  /// Used to trigger the [validationAnimationDone] callback at the end of the valid animation.
+  /// Used to trigger the [onValidationAnimationDone] callback at the end of the valid animation.
   final bool isLastPin;
 
   /// Controls whether to show the valid OTP decoration and animation for this pin field.
@@ -34,7 +34,7 @@ class _PinField extends StatefulWidget {
   final AnimatedOtpField animatedOtpField;
 
   /// A callback function to be called when the valid animation for the last pin field finishes.
-  final VoidCallback validationAnimationDone;
+  final VoidCallback onValidationAnimationDone;
 
   /// The controller for the shake animation, used when the OTP is invalid.
   final ShakeAnimationController shakeAnimationController;
@@ -75,7 +75,7 @@ class _PinFieldState extends State<_PinField> {
       /// for scaling effect
       Timer(Duration(milliseconds: 120), () {
         scale.value = defualtScaleValue;
-        if (widget.isLastPin) widget.validationAnimationDone();
+        if (widget.isLastPin) widget.onValidationAnimationDone();
       });
     }
     super.didUpdateWidget(oldWidget);

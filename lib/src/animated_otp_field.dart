@@ -29,7 +29,7 @@ class AnimatedOtpField extends StatefulWidget {
     this.focusedPinDecoration,
     this.ignorePointer = false,
     this.validationMsgTextStyle,
-    this.validationAnimationDone,
+    this.onValidationAnimationDone,
     this.shakeOnInValidOtp = true,
     this.showValidationMsg = true,
     this.enableTextSelection = true,
@@ -166,7 +166,7 @@ class AnimatedOtpField extends StatefulWidget {
 
   /// A callback function that is called when the valid OTP animation finishes.
   /// This can be used to trigger further actions after a successful validation animation.
-  final void Function()? validationAnimationDone;
+  final void Function()? onValidationAnimationDone;
 
   /// Whether the field should ignore user input (pointer events).
   /// If true, the field cannot be focused or edited.
@@ -266,14 +266,19 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
     _currentFocus.value = _currentValue.value.length;
   }
 
+  /// remove error decoration on Error
+  void _hideErrorMsg() {
+    _showInValidOtpDecoration.value = false;
+    _validationMsg.value = "";
+  }
+
   /// Listens to changes in the focus node to update the currently focused pin.
   /// When the field gains focus, it highlights the pin where the next character will be entered.
   /// When the field loses focus, it removes the focus highlight from all pins.
   void _focusNodeListner() {
     if (_fieldFocusNode.hasFocus) {
       /// remove error decoration on Error
-      _showInValidOtpDecoration.value = false;
-      _validationMsg.value = "";
+      _hideErrorMsg();
 
       /// to focus the last pin if the value len is equal to [widget.len]
       if (_currentValue.value.length == widget.len) {
@@ -291,6 +296,7 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
   /// Updates the [_currentValue] and the focused pin based on the new value.
   /// If the OTP reaches the specified length, it unfocused the field and calls the [isOtpValid] callback.
   void _onChanged(String value) {
+    _hideErrorMsg();
     if (value.length > widget.len) {
       final int lastCharIndex = _currentValue.value.length - 1;
       _currentValue.value = _currentValue.value.replaceRange(lastCharIndex, lastCharIndex + 1, value.split('').last);
@@ -351,7 +357,7 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
   void _otpIsInValid() {
     if (widget.shakeOnInValidOtp) _shakeAnimationController.start(shakeCount: 1);
     _showInValidOtpDecoration.value = true;
-    Timer(Duration(milliseconds: 1200), () => _showInValidOtpDecoration.value = false);
+    Timer(Duration(milliseconds: 1200), _hideErrorMsg);
     Gaimon.error(); // Assuming Gaimon is imported and available
     _validationMsg.value = widget.validationMsg;
   }
@@ -359,9 +365,7 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
   /// Returns the character at the specified index in the current OTP value.
   /// Returns an empty string if the index is out of bounds.
   String _pinValue(int index) {
-    if (index >= _currentValue.value.length) {
-      return "";
-    }
+    if (index >= _currentValue.value.length) return "";
     return _currentValue.value.split('')[index];
   }
 
@@ -430,8 +434,8 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
                 showInValidOTP: _showInValidOtpDecoration.value,
                 showValidOtp: showValidOtpAnimation[index].value,
                 shakeAnimationController: _shakeAnimationController,
-                validationAnimationDone: () {
-                  if (widget.validationAnimationDone != null) widget.validationAnimationDone!();
+                onValidationAnimationDone: () {
+                  widget.onValidationAnimationDone?.call();
                 },
               );
             },
