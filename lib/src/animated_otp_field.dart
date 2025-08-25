@@ -337,7 +337,7 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
     if (_isValid.value) {
       _otpIsValid();
     } else {
-      _otpIsInValid();
+      _otpIsNotValid();
     }
   }
 
@@ -354,10 +354,10 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
   }
 
   /// Triggers the invalid OTP animation (shake) and error decoration.
-  void _otpIsInValid() {
+  void _otpIsNotValid() {
     if (widget.shakeOnInValidOtp) _shakeAnimationController.start(shakeCount: 1);
     _showInValidOtpDecoration.value = true;
-    Timer(Duration(milliseconds: 1200), _hideErrorMsg);
+    // Timer(Duration(milliseconds: 1200), _hideErrorMsg);
     Gaimon.error(); // Assuming Gaimon is imported and available
     _validationMsg.value = widget.validationMsg;
   }
