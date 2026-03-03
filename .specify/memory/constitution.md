@@ -155,7 +155,7 @@ These requirements are non-negotiable for every release:
 ## Governance
 
 This constitution governs all development decisions for the
-`animated_otp_field` package. It supersedes ad-hoc practices.
+`telegram_animated_otp_field` package. It supersedes ad-hoc practices.
 
 - **Amendments**: Any principle change MUST be documented with rationale,
   version-bumped in this file, and propagated to dependent templates.

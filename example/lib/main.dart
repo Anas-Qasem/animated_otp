@@ -1,4 +1,4 @@
-import 'package:animated_otp_field/animated_otp_field.dart';
+import 'package:telegram_animated_otp_field/telegram_animated_otp_field.dart';
 import 'package:flutter/material.dart';
 
 void main() {

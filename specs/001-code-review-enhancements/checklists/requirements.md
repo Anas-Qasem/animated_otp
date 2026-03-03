@@ -34,7 +34,7 @@
 - [x] Spec includes functional requirements for widget tests (FR-018, FR-019)
 - [x] Success criteria include test pass requirement (SC-009)
 - [x] Test scope covers rendering, input, validation, error states, and disposal
-- [x] Test file location specified (`test/animated_otp_field_test.dart`)
+- [x] Test file location specified (`test/telegram_animated_otp_field_test.dart`)
 
 ## Notes
 

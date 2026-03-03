@@ -1,4 +1,4 @@
-part of '../animated_otp_field.dart';
+part of '../telegram_animated_otp_field.dart';
 
 /// A blinking cursor widget displayed inside an empty, focused pin box.
 ///

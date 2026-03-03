@@ -1,4 +1,4 @@
-# Public API Contract: animated_otp_field
+# Public API Contract: telegram_animated_otp_field
 
 **Branch**: `001-code-review-enhancements`
 **Date**: 2026-03-03
@@ -6,10 +6,10 @@
 
 ## Exported Symbols
 
-The barrel file `lib/animated_otp_field.dart` exports exactly two symbols:
+The barrel file `lib/telegram_animated_otp_field.dart` exports exactly two symbols:
 
 ```dart
-export 'src/animated_otp_field.dart' show AnimatedOtpField, AnimatedOtpFieldState;
+export 'src/telegram_animated_otp_field.dart' show AnimatedOtpField, AnimatedOtpFieldState;
 ```
 
 All other types (`_PinField`, `_PinCursor`, internal state) are library-private.
@@ -86,7 +86,7 @@ AnimatedOtpField(
 4. **Autofill**: Values from the OS are truncated to `length` and fed through the normal input flow.
 5. **Platform safety**: Haptic feedback degrades gracefully on unsupported platforms (web, desktop).
 6. **Layout**: Pins always render LTR. Error message respects the ambient `Directionality`.
-7. **Testing**: The package includes comprehensive widget tests in `test/animated_otp_field_test.dart` covering rendering, input, validation (client-side and server-side), error states, and disposal. All tests must pass via `flutter test`.
+7. **Testing**: The package includes comprehensive widget tests in `test/telegram_animated_otp_field_test.dart` covering rendering, input, validation (client-side and server-side), error states, and disposal. All tests must pass via `flutter test`.
 
 ## SDK Requirements
 

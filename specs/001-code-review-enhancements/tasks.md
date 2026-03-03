@@ -16,9 +16,9 @@
 
 ## Path Conventions
 
-- **Library**: `lib/src/animated_otp_field.dart`, `lib/src/widgets/pin_field.dart`, `lib/src/widgets/pin_cursor.dart`
-- **Barrel export**: `lib/animated_otp_field.dart`
-- **Tests**: `test/animated_otp_field_test.dart`
+- **Library**: `lib/src/telegram_animated_otp_field.dart`, `lib/src/widgets/pin_field.dart`, `lib/src/widgets/pin_cursor.dart`
+- **Barrel export**: `lib/telegram_animated_otp_field.dart`
+- **Tests**: `test/telegram_animated_otp_field_test.dart`
 - **Example**: `example/lib/main.dart`
 - **Metadata**: `pubspec.yaml`, `README.md`, `CHANGELOG.md`, `LICENSE`
 
@@ -40,7 +40,7 @@
 
 **CRITICAL**: These fixes were specified in the code review but are still missing from the source.
 
-- [x] T004 Wrap `Gaimon.error()` call in try-catch in `lib/src/animated_otp_field.dart` line 400 (FR-005, SC-005) — currently unguarded, will crash on web/desktop
+- [x] T004 Wrap `Gaimon.error()` call in try-catch in `lib/src/telegram_animated_otp_field.dart` line 400 (FR-005, SC-005) — currently unguarded, will crash on web/desktop
 - [x] T005 [P] Run `dart format .` and verify zero changes
 - [x] T006 [P] Run `flutter analyze` and verify zero issues across library, example, and test code
 
@@ -58,14 +58,14 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation fixes.**
 
-- [x] T007 [US1] Create test file scaffold with imports and `main()` in `test/animated_otp_field_test.dart`
-- [x] T008 [US1] Test: widget renders correct number of pin boxes for default `length: 6` in `test/animated_otp_field_test.dart`
-- [x] T009 [US1] Test: widget renders correct number of pin boxes for custom `length: 4` in `test/animated_otp_field_test.dart`
-- [x] T010 [US1] Test: `onCompleted` callback fires with full OTP string when all digits entered in `test/animated_otp_field_test.dart`
-- [x] T011 [US1] Test: `isOtpValid` returning `true` triggers valid decoration state in `test/animated_otp_field_test.dart`
-- [x] T012 [US1] Test: `isOtpValid` returning `false` triggers error decoration and validation message in `test/animated_otp_field_test.dart`
-- [x] T013 [US1] Test: validation works correctly when widget has a `GlobalKey` in `test/animated_otp_field_test.dart`
-- [x] T014 [US1] Test: re-focusing the field after error clears error decoration and message in `test/animated_otp_field_test.dart`
+- [x] T007 [US1] Create test file scaffold with imports and `main()` in `test/telegram_animated_otp_field_test.dart`
+- [x] T008 [US1] Test: widget renders correct number of pin boxes for default `length: 6` in `test/telegram_animated_otp_field_test.dart`
+- [x] T009 [US1] Test: widget renders correct number of pin boxes for custom `length: 4` in `test/telegram_animated_otp_field_test.dart`
+- [x] T010 [US1] Test: `onCompleted` callback fires with full OTP string when all digits entered in `test/telegram_animated_otp_field_test.dart`
+- [x] T011 [US1] Test: `isOtpValid` returning `true` triggers valid decoration state in `test/telegram_animated_otp_field_test.dart`
+- [x] T012 [US1] Test: `isOtpValid` returning `false` triggers error decoration and validation message in `test/telegram_animated_otp_field_test.dart`
+- [x] T013 [US1] Test: validation works correctly when widget has a `GlobalKey` in `test/telegram_animated_otp_field_test.dart`
+- [x] T014 [US1] Test: re-focusing the field after error clears error decoration and message in `test/telegram_animated_otp_field_test.dart`
 
 **Checkpoint**: US1 tests verify core validation contract. Run `flutter test` — all US1 tests pass.
 
@@ -79,10 +79,10 @@
 
 ### Tests for User Story 2
 
-- [x] T015 [US2] Test: widget disposes without exceptions when no interaction occurs in `test/animated_otp_field_test.dart`
-- [x] T016 [US2] Test: widget disposes cleanly during active valid-OTP animation (mid-timer) in `test/animated_otp_field_test.dart`
-- [x] T017 [US2] Test: widget with externally provided `controller` and `focusNode` does NOT dispose them in `test/animated_otp_field_test.dart`
-- [x] T018 [US2] Test: widget with null `controller` and `focusNode` disposes its own internally created instances in `test/animated_otp_field_test.dart`
+- [x] T015 [US2] Test: widget disposes without exceptions when no interaction occurs in `test/telegram_animated_otp_field_test.dart`
+- [x] T016 [US2] Test: widget disposes cleanly during active valid-OTP animation (mid-timer) in `test/telegram_animated_otp_field_test.dart`
+- [x] T017 [US2] Test: widget with externally provided `controller` and `focusNode` does NOT dispose them in `test/telegram_animated_otp_field_test.dart`
+- [x] T018 [US2] Test: widget with null `controller` and `focusNode` disposes its own internally created instances in `test/telegram_animated_otp_field_test.dart`
 
 **Checkpoint**: US2 tests verify lifecycle safety. Run `flutter test` — all US1 + US2 tests pass.
 
@@ -96,8 +96,8 @@
 
 ### Tests for User Story 3
 
-- [x] T019 [US3] Test: `autofill` with exact-length value fills all pins and triggers `onCompleted` in `test/animated_otp_field_test.dart`
-- [x] T020 [US3] Test: `autofill` with over-length value truncates to `length` in `test/animated_otp_field_test.dart`
+- [x] T019 [US3] Test: `autofill` with exact-length value fills all pins and triggers `onCompleted` in `test/telegram_animated_otp_field_test.dart`
+- [x] T020 [US3] Test: `autofill` with over-length value truncates to `length` in `test/telegram_animated_otp_field_test.dart`
 
 **Checkpoint**: US3 tests verify autofill contract. Run `flutter test` — all US1–US3 tests pass.
 
@@ -111,10 +111,10 @@
 
 ### Tests for User Story 4
 
-- [x] T021 [US4] Test: `AnimatedOtpField()` with zero parameters renders a functional 6-digit field in `test/animated_otp_field_test.dart`
-- [x] T022 [US4] Test: custom `pinDecoration`, `focusedPinDecoration`, and `errorPinDecoration` are applied in `test/animated_otp_field_test.dart`
-- [x] T023 [US4] Test: `validateOtp(true)` via `GlobalKey<AnimatedOtpFieldState>` triggers valid state in `test/animated_otp_field_test.dart`
-- [x] T024 [US4] Test: `validateOtp(false)` via `GlobalKey<AnimatedOtpFieldState>` triggers error state in `test/animated_otp_field_test.dart`
+- [x] T021 [US4] Test: `AnimatedOtpField()` with zero parameters renders a functional 6-digit field in `test/telegram_animated_otp_field_test.dart`
+- [x] T022 [US4] Test: custom `pinDecoration`, `focusedPinDecoration`, and `errorPinDecoration` are applied in `test/telegram_animated_otp_field_test.dart`
+- [x] T023 [US4] Test: `validateOtp(true)` via `GlobalKey<AnimatedOtpFieldState>` triggers valid state in `test/telegram_animated_otp_field_test.dart`
+- [x] T024 [US4] Test: `validateOtp(false)` via `GlobalKey<AnimatedOtpFieldState>` triggers error state in `test/telegram_animated_otp_field_test.dart`
 
 **Checkpoint**: US4 tests verify public API defaults and server-side validation. Run `flutter test` — all US1–US4 tests pass.
 
@@ -128,8 +128,8 @@
 
 ### Tests for User Story 5
 
-- [x] T025 [US5] Test: invalid OTP does not throw exception when haptic feedback is unavailable (test environment) in `test/animated_otp_field_test.dart`
-- [x] T026 [US5] Test: `shakeOnInvalidOtp: false` disables shake but still shows error decoration in `test/animated_otp_field_test.dart`
+- [x] T025 [US5] Test: invalid OTP does not throw exception when haptic feedback is unavailable (test environment) in `test/telegram_animated_otp_field_test.dart`
+- [x] T026 [US5] Test: `shakeOnInvalidOtp: false` disables shake but still shows error decoration in `test/telegram_animated_otp_field_test.dart`
 
 **Checkpoint**: US5 tests verify graceful degradation. Run `flutter test` — all tests pass.
 
@@ -246,7 +246,7 @@ Task T017: "Test: external controller/focusNode not disposed"
 - [P] tasks = different files, no dependencies
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
-- All tests written in a single file `test/animated_otp_field_test.dart` grouped by `group()` per user story
+- All tests written in a single file `test/telegram_animated_otp_field_test.dart` grouped by `group()` per user story
 - The existing test file is a commented-out placeholder — T007 replaces it entirely
 - T004 (Gaimon try-catch) is the only remaining code fix; all other FR bug fixes from the code review are already applied
 - Commit after each phase completion

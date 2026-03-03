@@ -5,7 +5,7 @@
 
 ## Summary
 
-Comprehensive code review of the `animated_otp_field` Flutter package to fix 7
+Comprehensive code review of the `telegram_animated_otp_field` Flutter package to fix 7
 identified bugs, correct 4 public API naming issues, add full dartdoc
 documentation to all public symbols, rewrite the example app, and prepare all
 pub.dev metadata (README, CHANGELOG, LICENSE, pubspec) for initial publication
@@ -16,7 +16,7 @@ at version 0.1.0.
 **Language/Version**: Dart 3.11.0 / Flutter 3.41.2
 **Primary Dependencies**: `shake_animation_widget ^3.0.4`, `gaimon ^1.4.1`
 **Storage**: N/A
-**Testing**: `flutter_test` (full widget tests in `test/animated_otp_field_test.dart`)
+**Testing**: `flutter_test` (full widget tests in `test/telegram_animated_otp_field_test.dart`)
 **Target Platform**: iOS, Android, Web, macOS, Windows, Linux (multi-platform)
 **Project Type**: Flutter package (library)
 **Performance Goals**: 60 fps animations, zero jank on digit entry
@@ -58,9 +58,9 @@ specs/001-code-review-enhancements/
 
 ```text
 lib/
-├── animated_otp_field.dart          # Barrel file with library docs + explicit exports
+├── telegram_animated_otp_field.dart          # Barrel file with library docs + explicit exports
 └── src/
-    ├── animated_otp_field.dart      # AnimatedOtpField widget + AnimatedOtpFieldState
+    ├── telegram_animated_otp_field.dart      # AnimatedOtpField widget + AnimatedOtpFieldState
     └── widgets/
         ├── pin_field.dart           # _PinField (single pin box)
         └── pin_cursor.dart          # _PinCursor (blinking cursor)
@@ -70,7 +70,7 @@ example/
     └── main.dart                    # OTP verification demo app
 
 test/
-└── animated_otp_field_test.dart     # Full widget tests (rendering, input, validation, disposal)
+└── telegram_animated_otp_field_test.dart     # Full widget tests (rendering, input, validation, disposal)
 
 pubspec.yaml                         # Package metadata
 README.md                            # Package documentation

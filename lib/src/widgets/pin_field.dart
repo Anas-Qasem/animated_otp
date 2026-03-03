@@ -1,4 +1,4 @@
-part of '../animated_otp_field.dart';
+part of '../telegram_animated_otp_field.dart';
 
 /// A single pin box within the [AnimatedOtpField].
 ///

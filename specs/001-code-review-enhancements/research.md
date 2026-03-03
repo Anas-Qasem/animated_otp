@@ -72,7 +72,7 @@ published, these are free renames with no migration cost.
 **Decision**: Use explicit `show` clause.
 
 ```dart
-export 'src/animated_otp_field.dart' show AnimatedOtpField, AnimatedOtpFieldState;
+export 'src/telegram_animated_otp_field.dart' show AnimatedOtpField, AnimatedOtpFieldState;
 ```
 
 **Rationale**: Controls the public API surface precisely. Prevents accidental
@@ -80,7 +80,7 @@ export of internal symbols if new public-looking types are added to the source
 file.
 
 **Alternatives considered**:
-- Bare `export 'src/animated_otp_field.dart';` (original). Rejected: could leak
+- Bare `export 'src/telegram_animated_otp_field.dart';` (original). Rejected: could leak
   unintended symbols.
 
 ## R5: Version Number for Initial Release
@@ -128,7 +128,7 @@ exceptions. The `mounted` check is the standard Flutter pattern for this.
 
 ## R8: Testing Strategy
 
-**Decision**: Write comprehensive widget tests in `test/animated_otp_field_test.dart`
+**Decision**: Write comprehensive widget tests in `test/telegram_animated_otp_field_test.dart`
 using `flutter_test`.
 
 **Rationale**: A pub.dev package must inspire confidence in consumers. Widget

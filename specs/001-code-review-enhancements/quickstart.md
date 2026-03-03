@@ -1,4 +1,4 @@
-# Quick Start: animated_otp_field
+# Quick Start: telegram_animated_otp_field
 
 **Branch**: `001-code-review-enhancements`
 **Date**: 2026-03-03
@@ -13,7 +13,7 @@
 ```yaml
 # pubspec.yaml
 dependencies:
-  animated_otp_field: ^0.1.0
+  telegram_animated_otp_field: ^0.1.0
 ```
 
 ```bash
@@ -23,7 +23,7 @@ flutter pub get
 ## Basic Usage (Client-Side Validation)
 
 ```dart
-import 'package:animated_otp_field/animated_otp_field.dart';
+import 'package:telegram_animated_otp_field/telegram_animated_otp_field.dart';
 import 'package:flutter/material.dart';
 
 class OtpScreen extends StatelessWidget {

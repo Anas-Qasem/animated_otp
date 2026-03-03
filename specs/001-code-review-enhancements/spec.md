@@ -131,7 +131,7 @@ Verify the shake animation plays without exceptions.
 - **FR-006**: The RTL error-message slide tween MUST end at `Offset.zero` (natural position), not at an arbitrary offset.
 - **FR-007**: Public API parameter names MUST follow Dart/Flutter naming conventions: `controller` (not `textController`), `focusNode` (not `fieldFocusNod`), `length` (not `len`), `shakeOnInvalidOtp` (not `shakeOnInValidOtp`).
 - **FR-008**: Every public class, constructor, property, and method MUST have a `///` dartdoc comment explaining purpose, parameters, defaults, and usage.
-- **FR-009**: The barrel file (`lib/animated_otp_field.dart`) MUST use explicit `show` exports to control the public API surface.
+- **FR-009**: The barrel file (`lib/telegram_animated_otp_field.dart`) MUST use explicit `show` exports to control the public API surface.
 - **FR-010**: The `pubspec.yaml` MUST contain a meaningful description (60-180 chars), an updated version, and modern SDK constraints (`sdk: ^3.11.0`, `flutter: >=3.41.2`).
 - **FR-011**: The package MUST include a LICENSE file with a recognized OSS license (MIT).
 - **FR-012**: The CHANGELOG MUST document all changes using Keep-a-Changelog conventions.
@@ -140,7 +140,7 @@ Verify the shake animation plays without exceptions.
 - **FR-015**: `flutter analyze` MUST report zero issues across library, example, and test code.
 - **FR-016**: `dart format .` MUST produce zero formatting changes.
 - **FR-017**: `dart pub publish --dry-run` MUST pass with no errors (warnings for uncommitted git files and missing homepage are acceptable pre-commit).
-- **FR-018**: The package MUST include comprehensive widget tests in `test/animated_otp_field_test.dart` covering: widget rendering with default parameters, digit input and focus transitions, OTP completion triggering `onCompleted`, client-side validation via `isOtpValid`, server-side validation via `AnimatedOtpFieldState.validateOtp`, error decoration display on invalid OTP, and proper widget disposal without exceptions.
+- **FR-018**: The package MUST include comprehensive widget tests in `test/telegram_animated_otp_field_test.dart` covering: widget rendering with default parameters, digit input and focus transitions, OTP completion triggering `onCompleted`, client-side validation via `isOtpValid`, server-side validation via `AnimatedOtpFieldState.validateOtp`, error decoration display on invalid OTP, and proper widget disposal without exceptions.
 - **FR-019**: All widget tests MUST pass with `flutter test` reporting zero failures.
 
 ### Key Entities

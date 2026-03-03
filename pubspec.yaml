@@ -1,4 +1,4 @@
-name: animated_otp_field
+name: telegram_animated_otp_field
 description: >-
   A highly customizable, animated OTP input field for Flutter with smooth
   digit-entry animations similar to Telegram, shake feedback, haptic response,
