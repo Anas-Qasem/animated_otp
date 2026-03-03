@@ -1,7 +1,7 @@
 # Animated OTP Field
 
 A highly customizable, animated OTP (One-Time Password) input field for Flutter.
-Each digit pops in with a smooth bounce animation, the active box shows a
+Each digit pops in with a smooth bounce animation similar to Telegram, the active box shows a
 blinking cursor, and validation triggers either a sequential success pulse or a
 shake with haptic feedback.
 

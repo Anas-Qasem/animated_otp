@@ -1,8 +1,8 @@
 name: animated_otp_field
 description: >-
   A highly customizable, animated OTP input field for Flutter with smooth
-  digit-entry animations, shake feedback, haptic response, and built-in
-  validation states.
+  digit-entry animations similar to Telegram, shake feedback, haptic response,
+  and built-in validation states.
 version: 0.1.0
 homepage: https://github.com/Anas-Qasem/animated_otp
 repository: https://github.com/Anas-Qasem/animated_otp
