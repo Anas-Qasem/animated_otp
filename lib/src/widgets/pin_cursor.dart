@@ -1,34 +1,36 @@
 part of '../animated_otp_field.dart';
 
+/// A blinking cursor widget displayed inside an empty, focused pin box.
+///
+/// Fades in and out continuously using a [FadeTransition] driven by an
+/// [AnimationController]. If [cursor] is null, a default `|` text is shown.
 class _PinCursor extends StatefulWidget {
-  const _PinCursor({required this.cursor,required this.cursorTextStyle});
-  final TextStyle? cursorTextStyle;
+  const _PinCursor({
+    required this.cursor,
+    required this.cursorTextStyle,
+  });
+
+  /// Custom cursor widget, or `null` to use the default `|` text.
   final Widget? cursor;
+
+  /// Style applied to the default `|` text cursor.
+  final TextStyle? cursorTextStyle;
+
   @override
   State<_PinCursor> createState() => _PinCursorState();
 }
 
-class _PinCursorState extends State<_PinCursor> with SingleTickerProviderStateMixin {
+class _PinCursorState extends State<_PinCursor>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _startCursorAnimation();
-  }
-
-  void _startCursorAnimation() {
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 450),
-    );
-
-    _animationController.addStatusListener((AnimationStatus status) {
-      if (status == AnimationStatus.completed) {
-        _animationController.repeat(reverse: true);
-      }
-    });
-    _animationController.forward();
+    )..repeat(reverse: true);
   }
 
   @override
@@ -44,7 +46,8 @@ class _PinCursorState extends State<_PinCursor> with SingleTickerProviderStateMi
       child: widget.cursor ??
           Text(
             '|',
-            style: widget.cursorTextStyle ?? TextStyle(color: Theme.of(context).primaryColor),
+            style: widget.cursorTextStyle ??
+                TextStyle(color: Theme.of(context).primaryColor),
           ),
     );
   }

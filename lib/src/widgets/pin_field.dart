@@ -1,102 +1,95 @@
 part of '../animated_otp_field.dart';
 
-/// An individual pin field widget representing a single digit/character input box.
-/// Handles the display of the value, cursor, and valid/invalid/focused states with animations.
+/// A single pin box within the [AnimatedOtpField].
+///
+/// Displays one digit with animated transitions for entry (bounce-in),
+/// focus highlighting, valid (scale-pulse), and invalid (error border) states.
 class _PinField extends StatefulWidget {
   const _PinField({
     required this.value,
     required this.isFocus,
     required this.isLastPin,
     required this.showValidOtp,
-    required this.showInValidOTP,
+    required this.showInvalidOtp,
     required this.animatedOtpField,
     required this.onValidationAnimationDone,
-    required this.shakeAnimationController,
   });
 
-  /// The current single character value displayed in this pin field.
+  /// The single-character value displayed in this pin box.
   final String value;
 
-  /// Indicates if this pin field is currently focused and should show the cursor.
+  /// Whether this pin box is currently focused (shows the cursor).
   final bool isFocus;
 
-  /// Indicates if this is the last pin field in the sequence.
-  /// Used to trigger the [onValidationAnimationDone] callback at the end of the valid animation.
+  /// Whether this is the last pin in the sequence. Used to fire
+  /// [onValidationAnimationDone] at the end of the success animation.
   final bool isLastPin;
 
-  /// Controls whether to show the valid OTP decoration and animation for this pin field.
+  /// Whether to show the valid-OTP decoration and scale-pulse animation.
   final bool showValidOtp;
 
-  /// Controls whether to show the invalid OTP decoration for this pin field.
-  final bool showInValidOTP;
+  /// Whether to show the invalid-OTP error decoration.
+  final bool showInvalidOtp;
 
-  /// A reference back to the parent [AnimatedOtpField] widget to access its properties.
+  /// Reference to the parent widget for reading style and size properties.
   final AnimatedOtpField animatedOtpField;
 
-  /// A callback function to be called when the valid animation for the last pin field finishes.
+  /// Called when the valid-OTP animation on the last pin finishes.
   final VoidCallback onValidationAnimationDone;
-
-  /// The controller for the shake animation, used when the OTP is invalid.
-  final ShakeAnimationController shakeAnimationController;
 
   @override
   State<_PinField> createState() => _PinFieldState();
 }
 
 class _PinFieldState extends State<_PinField> {
-  late final ValueNotifier<Alignment> alignment;
-  late final ValueNotifier<Matrix4> scale;
-  late final Alignment defualtAlignValue;
-  late final Matrix4 defualtScaleValue;
+  late final ValueNotifier<Alignment> _alignment;
+  late final ValueNotifier<Matrix4> _scale;
+
+  static const _defaultAlignment = Alignment(0.0, 2.4);
+  static final _defaultScale = Matrix4.diagonal3Values(1.0, 1.0, 1.0);
 
   @override
   void initState() {
     super.initState();
-
-    defualtAlignValue = const Alignment(0.0, 2.4);
-    defualtScaleValue = Matrix4.diagonal3Values(1.0, 1.0, 1.0);
-    alignment = ValueNotifier(defualtAlignValue);
-    scale = ValueNotifier(defualtScaleValue);
+    _alignment = ValueNotifier(_defaultAlignment);
+    _scale = ValueNotifier(_defaultScale);
   }
 
   @override
   void didUpdateWidget(covariant _PinField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
     if (widget.value.isNotEmpty && widget.value != oldWidget.value) {
-      alignment.value = const Alignment(0.0, -.2);
-
-      /// for bouncing effect
-      Timer(Duration(milliseconds: 200), () => alignment.value = const Alignment(0.0, 0.0));
+      _alignment.value = const Alignment(0.0, -0.2);
+      Timer(const Duration(milliseconds: 200), () {
+        if (mounted) _alignment.value = Alignment.center;
+      });
     } else if (widget.value.isEmpty) {
-      alignment.value = defualtAlignValue;
-    } else if (widget.showValidOtp) {
-      // Start valid animation only when showValidOtp becomes true
-      scale.value = Matrix4.diagonal3Values(1.08, 1.08, 1.0);
-
-      /// for scaling effect
-      Timer(Duration(milliseconds: 120), () {
-        scale.value = defualtScaleValue;
+      _alignment.value = _defaultAlignment;
+    } else if (widget.showValidOtp && !oldWidget.showValidOtp) {
+      _scale.value = Matrix4.diagonal3Values(1.08, 1.08, 1.0);
+      Timer(const Duration(milliseconds: 120), () {
+        if (!mounted) return;
+        _scale.value = _defaultScale;
         if (widget.isLastPin) widget.onValidationAnimationDone();
       });
     }
-    super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
-    // Remove listener for shake animation controller if needed, or handle in parent.
-    // widget.shakeAnimationController.removeListener(); // This line seems incorrect here.
-    alignment.dispose();
-    scale.dispose();
+    _alignment.dispose();
+    _scale.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Matrix4>(
-      valueListenable: scale,
-      builder: (context, scale, child) {
+      valueListenable: _scale,
+      builder: (context, scaleValue, child) {
         return AnimatedContainer(
-          transform: scale,
+          transform: scaleValue,
           clipBehavior: Clip.hardEdge,
           decoration: _fieldDecoration(context),
           width: widget.animatedOtpField.pinSize.width,
@@ -109,61 +102,70 @@ class _PinFieldState extends State<_PinField> {
         clipBehavior: Clip.hardEdge,
         alignment: Alignment.center,
         children: [
-          /// cursor
-          if (widget.value.isEmpty && widget.animatedOtpField.showCursor && widget.isFocus) ...[
+          if (widget.value.isEmpty &&
+              widget.animatedOtpField.showCursor &&
+              widget.isFocus)
             Align(
               alignment: Alignment.center,
               child: _PinCursor(
                 cursor: widget.animatedOtpField.cursor,
                 cursorTextStyle: widget.animatedOtpField.cursorTextStyle,
               ),
-            )
-          ],
-
-          /// value
+            ),
           ValueListenableBuilder<Alignment>(
-            valueListenable: alignment,
-            builder: (context, alignment, child) {
+            valueListenable: _alignment,
+            builder: (context, alignValue, child) {
               return AnimatedAlign(
                 curve: Curves.ease,
-                duration: Duration(milliseconds: 200),
-                alignment: alignment,
+                alignment: alignValue,
+                duration: const Duration(milliseconds: 200),
                 child: child!,
               );
             },
-            child: Text(widget.value, style: widget.animatedOtpField.valueTextStyle ?? TextStyle(fontSize: 20)),
-          )
+            child: Text(
+              widget.value,
+              style: widget.animatedOtpField.valueTextStyle ??
+                  const TextStyle(fontSize: 20),
+            ),
+          ),
         ],
       ),
     );
   }
 
   Decoration _fieldDecoration(BuildContext context) {
-    final ThemeData appTheme = Theme.of(context);
-    final BoxDecoration defualtDecoration = widget.animatedOtpField.pinDecoration ?? _defualtDecoration();
-    //
-    if (widget.showInValidOTP) {
+    final theme = Theme.of(context);
+    final defaultDecoration =
+        widget.animatedOtpField.pinDecoration ?? _defaultDecoration();
+
+    if (widget.showInvalidOtp) {
       return widget.animatedOtpField.errorPinDecoration ??
-          defualtDecoration.copyWith(border: Border.all(width: 1.5, color: appTheme.colorScheme.error));
+          defaultDecoration.copyWith(
+            border: Border.all(width: 1.5, color: theme.colorScheme.error),
+          );
     }
 
     if (widget.showValidOtp) {
-      return widget.animatedOtpField.validPinDecoration ?? defualtDecoration.copyWith(border: Border.all(width: 1.8, color: Colors.green));
+      return widget.animatedOtpField.validPinDecoration ??
+          defaultDecoration.copyWith(
+            border: Border.all(width: 1.8, color: Colors.green),
+          );
     }
 
     if (widget.isFocus) {
-      return widget.animatedOtpField.focusedPinDecoration ?? defualtDecoration.copyWith(border: Border.all(width: 1.5, color: appTheme.primaryColor));
+      return widget.animatedOtpField.focusedPinDecoration ??
+          defaultDecoration.copyWith(
+            border: Border.all(width: 1.5, color: theme.primaryColor),
+          );
     }
-    return defualtDecoration;
+
+    return defaultDecoration;
   }
 
-  BoxDecoration _defualtDecoration() {
+  BoxDecoration _defaultDecoration() {
     return BoxDecoration(
       color: Colors.transparent,
-      border: Border.all(
-        width: 1,
-        color: Colors.grey[350]!,
-      ),
+      border: Border.all(width: 1, color: Colors.grey[350]!),
       borderRadius: BorderRadius.circular(8),
     );
   }
