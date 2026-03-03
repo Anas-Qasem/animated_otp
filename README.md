@@ -87,37 +87,6 @@ AnimatedOtpField(
 )
 ```
 
-## Parameters
-
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `length` | `int` | `6` | Number of OTP digits |
-| `pinSize` | `Size` | `Size(45, 45)` | Size of each pin box |
-| `spacing` | `double` | `8` | Horizontal gap between boxes |
-| `controller` | `TextEditingController?` | `null` | External text controller |
-| `focusNode` | `FocusNode?` | `null` | External focus node |
-| `isOtpValid` | `bool Function(String)?` | `null` | Client-side validation |
-| `onCompleted` | `void Function(String)?` | `null` | Called when all digits entered |
-| `onValidationAnimationDone` | `VoidCallback?` | `null` | Called after success animation |
-| `pinDecoration` | `BoxDecoration?` | `null` | Default pin box decoration |
-| `focusedPinDecoration` | `BoxDecoration?` | `null` | Focused pin box decoration |
-| `errorPinDecoration` | `BoxDecoration?` | `null` | Error-state decoration |
-| `validPinDecoration` | `BoxDecoration?` | `null` | Valid-state decoration |
-| `valueTextStyle` | `TextStyle?` | `null` | Style for digit text |
-| `cursorTextStyle` | `TextStyle?` | `null` | Style for default `\|` cursor |
-| `cursor` | `Widget?` | `null` | Custom cursor widget |
-| `showCursor` | `bool` | `true` | Show/hide blinking cursor |
-| `shakeOnInvalidOtp` | `bool` | `true` | Shake on invalid OTP |
-| `showValidationMsg` | `bool` | `true` | Show error message |
-| `validationMsg` | `String` | `'Invalid OTP'` | Error message text |
-| `validationMsgTextStyle` | `TextStyle?` | `null` | Error message style |
-| `ignorePointer` | `bool` | `false` | Disable all input |
-| `autofillHints` | `Iterable<String>?` | `[oneTimeCode]` | Autofill hints |
-| `pinAnimationDuration` | `Duration` | `300ms` | Decoration transition duration |
-| `extraFieldHeight` | `double` | `0` | Extra space below pin row |
-| `enableTextSelection` | `bool` | `true` | Enable text selection |
-| `customErrorMsgTween` | `Tween<Offset> Function()?` | `null` | Custom error animation |
-
 ## License
 
 MIT License — see [LICENSE](LICENSE) for details.
