@@ -56,6 +56,8 @@ known bugs before release.
 - Known typos in public API identifiers (e.g., `fieldFocusNod` instead of
   `fieldFocusNode`) MUST be corrected and marked as breaking changes.
 - `flutter analyze` MUST report zero issues at the `info` level or above.
+- `flutter test` MUST pass with zero failures; comprehensive widget tests
+  are required for all public API behavior.
 - Third-party dependencies MUST be justified; prefer Flutter SDK widgets
   over external packages when the overhead is trivial.
 
@@ -128,7 +130,8 @@ These requirements are non-negotiable for every release:
 | Documentation coverage   | All public APIs have dartdoc comments              |
 | Example                  | `example/` contains a runnable demo                |
 | License                  | Recognized OSS license present at repo root        |
-| SDK constraints          | `environment.sdk` uses modern Dart 3.x range       |
+| Widget tests             | `flutter test` passes with zero failures           |
+| SDK constraints          | `environment.sdk` targets Dart ^3.11.0 / Flutter >=3.41.2 |
 | Platform support         | Explicitly declared in `pubspec.yaml` if needed    |
 | Dry-run publish          | `dart pub publish --dry-run` passes cleanly        |
 
@@ -139,9 +142,9 @@ These requirements are non-negotiable for every release:
 2. **Formatting**: Run `dart format .` before every commit.
 3. **Analysis**: Run `flutter analyze` and resolve all issues before
    every commit.
-4. **Testing**: Widget tests SHOULD cover primary user interactions
-   (input, validation, animation triggers). Tests are encouraged but
-   not blocking for initial release.
+4. **Testing**: Widget tests MUST cover primary user interactions
+   (rendering, input, validation, error states, disposal). Run
+   `flutter test` and ensure zero failures before every release.
 5. **Versioning**: Follow semver strictly:
    - MAJOR: Breaking API changes (renamed parameters, removed members).
    - MINOR: New features, new parameters with defaults.

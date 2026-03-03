@@ -386,7 +386,11 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
     }
     _showInvalidOtpDecoration.value = true;
     _validationMsg.value = widget.validationMsg;
-    Gaimon.error();
+    try {
+      Gaimon.error();
+    } catch (_) {
+      // Ignore: Haptic feedback is unsupported on web/desktop and throws.
+    }
   }
 
   String _pinValue(int index) {
@@ -460,7 +464,7 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
           widget.length,
           (index) => ListenableBuilder(
             listenable: Listenable.merge([_currentFocus, _currentValue, _showInvalidOtpDecoration, _validAnimationFlags[index]]),
-            builder: (_, __) {
+            builder: (context, child) {
               return _PinField(
                 value: _pinValue(index),
                 animatedOtpField: widget,
@@ -520,7 +524,7 @@ class AnimatedOtpFieldState extends State<AnimatedOtpField> implements TextSelec
                     padding: const EdgeInsets.symmetric(horizontal: 2),
                     child: ValueListenableBuilder<String>(
                       valueListenable: _validationMsg,
-                      builder: (_, msg, __) => AnimatedSwitcher(
+                      builder: (_, msg, _) => AnimatedSwitcher(
                         duration: const Duration(milliseconds: 500),
                         transitionBuilder: (child, animation) => _transitionBuilder(child, animation, context),
                         child: msg.isEmpty ? const SizedBox.shrink() : Text(msg, style: widget.validationMsgTextStyle ?? _errorTextStyle),

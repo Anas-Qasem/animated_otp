@@ -1,0 +1,35 @@
+---
+description: Project Development Guidelines
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# animated_otp_field Development Guidelines
+
+Auto-generated from all feature plans. Last updated: 2026-03-03
+
+## Active Technologies
+
+- Dart 3.6+ / Flutter 3.27+ + `shake_animation_widget ^3.0.4`, `gaimon ^1.4.1` (001-code-review-enhancements)
+
+## Project Structure
+
+```text
+src/
+tests/
+```
+
+## Commands
+
+# Add commands for Dart 3.6+ / Flutter 3.27+
+
+## Code Style
+
+Dart 3.6+ / Flutter 3.27+: Follow standard conventions
+
+## Recent Changes
+
+- 001-code-review-enhancements: Added Dart 3.6+ / Flutter 3.27+ + `shake_animation_widget ^3.0.4`, `gaimon ^1.4.1`
+
+<!-- MANUAL ADDITIONS START -->
+<!-- MANUAL ADDITIONS END -->

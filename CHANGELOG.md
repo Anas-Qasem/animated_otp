@@ -14,4 +14,5 @@
 - Autofill support with `oneTimeCode` hint.
 - RTL layout support.
 - Comprehensive dartdoc documentation.
+- Comprehensive widget test coverage for logic and validations.
 - Full example application.

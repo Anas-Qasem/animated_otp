@@ -124,7 +124,8 @@ class _PinFieldState extends State<_PinField> {
             },
             child: Text(
               widget.value,
-              style: widget.animatedOtpField.valueTextStyle ??
+              style:
+                  widget.animatedOtpField.valueTextStyle ??
                   const TextStyle(fontSize: 20),
             ),
           ),

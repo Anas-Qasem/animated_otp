@@ -14,5 +14,4 @@
 /// ```
 library;
 
-export 'src/animated_otp_field.dart'
-    show AnimatedOtpField, AnimatedOtpFieldState;
+export 'src/animated_otp_field.dart' show AnimatedOtpField, AnimatedOtpFieldState;

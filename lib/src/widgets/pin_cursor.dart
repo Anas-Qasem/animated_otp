@@ -5,10 +5,7 @@ part of '../animated_otp_field.dart';
 /// Fades in and out continuously using a [FadeTransition] driven by an
 /// [AnimationController]. If [cursor] is null, a default `|` text is shown.
 class _PinCursor extends StatefulWidget {
-  const _PinCursor({
-    required this.cursor,
-    required this.cursorTextStyle,
-  });
+  const _PinCursor({required this.cursor, required this.cursorTextStyle});
 
   /// Custom cursor widget, or `null` to use the default `|` text.
   final Widget? cursor;
@@ -43,10 +40,12 @@ class _PinCursorState extends State<_PinCursor>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _animationController,
-      child: widget.cursor ??
+      child:
+          widget.cursor ??
           Text(
             '|',
-            style: widget.cursorTextStyle ??
+            style:
+                widget.cursorTextStyle ??
                 TextStyle(color: Theme.of(context).primaryColor),
           ),
     );

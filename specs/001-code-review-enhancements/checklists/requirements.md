@@ -29,9 +29,17 @@
 - [x] Feature meets measurable outcomes defined in Success Criteria
 - [x] No implementation details leak into specification
 
+## Testing Readiness
+
+- [x] Spec includes functional requirements for widget tests (FR-018, FR-019)
+- [x] Success criteria include test pass requirement (SC-009)
+- [x] Test scope covers rendering, input, validation, error states, and disposal
+- [x] Test file location specified (`test/animated_otp_field_test.dart`)
+
 ## Notes
 
 - All items pass validation.
 - The specification is based on an actual code review already performed, so all bugs and enhancements are concrete findings, not hypothetical.
 - No [NEEDS CLARIFICATION] markers were needed because the codebase is fully visible and the review has already been completed.
+- SDK targets: Flutter 3.41.2 / Dart 3.11.0.
 - Ready to proceed to `/speckit.plan` or implementation.
